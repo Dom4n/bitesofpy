@@ -7,7 +7,7 @@ import urllib.request
 # prep
 
 tempfile = os.path.join('/tmp', 'dirnames')
-urllib.request.urlretrieve('http://bit.ly/2ABUTjv', tempfile)
+# urllib.request.urlretrieve('http://bit.ly/2ABUTjv', tempfile)
 
 IGNORE = 'static templates data pybites bbelderbos hobojoe1848'.split()
 
@@ -32,7 +32,14 @@ def gen_files():
 
        -> use last column to filter out directories (= True)
     """
-    pass
+    with open(tempfile, 'r') as f:
+        lines = f.read().splitlines()
+    lines = list(filter(lambda line: line.endswith('True'), lines))
+    for line in lines:
+        line = line.split(',')[0].split('/')
+        if line[1] in IGNORE:
+            continue
+        yield line[0], line[1]
 
 
 def diehard_pybites():
@@ -42,4 +49,13 @@ def diehard_pybites():
        Calling this function on the dataset (held tempfile) should return:
        Stats(user='clamytoe', challenge=('01', 7))
     """
-    pass
+    gen = gen_files()
+    while True:
+        try:
+            stat = next(gen)
+        except StopIteration:
+            break
+        users.update([stat[1]])
+        popular_challenges.update([stat[0]])
+
+    return Stats(user=users.most_common(1)[0][0], challenge=popular_challenges.most_common(1)[0])
