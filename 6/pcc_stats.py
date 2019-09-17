@@ -7,7 +7,7 @@ import urllib.request
 # prep
 
 tempfile = os.path.join('/tmp', 'dirnames')
-# urllib.request.urlretrieve('http://bit.ly/2ABUTjv', tempfile)
+urllib.request.urlretrieve('http://bit.ly/2ABUTjv', tempfile)
 
 IGNORE = 'static templates data pybites bbelderbos hobojoe1848'.split()
 
