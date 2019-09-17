@@ -13,8 +13,10 @@ blog = dict(name='PyBites',
 # define namedtuple here
 
 def dict2nt(dict_):
-    pass
+    Blog = namedtuple('Blog', list(dict_.keys()))
+    nt = Blog(**dict_)
+    return nt
 
 
-def nt2json(nt):
-    pass
+def nt2json(nt: namedtuple):
+    return json.dumps(nt._asdict(), default=str)
