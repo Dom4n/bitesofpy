@@ -1,4 +1,6 @@
 # source: https://www.virgin.com/richard-branson/my-top-10-quotes-living-life-better
+import re
+
 HTML = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
@@ -26,4 +28,6 @@ HTML = """<!DOCTYPE html>
 
 def extract_quotes(html: str = HTML) -> dict:
     """See instructions in the Bite description"""
-    pass
+    regex = re.compile(r'<p>\d+.\W\"(?P<quote>.*?)\"\W-\W(?P<author>.*)</p>')
+    matches = re.finditer(regex, HTML)
+    return {m.group('author'): m.group('quote') for m in matches}
