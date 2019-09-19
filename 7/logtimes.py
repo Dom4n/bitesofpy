@@ -6,7 +6,7 @@ SHUTDOWN_EVENT = 'Shutdown initiated'
 
 # prep: read in the logfile
 logfile = os.path.join('/tmp', 'log')
-# urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
+urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
 
 with open(logfile) as f:
     loglines = f.readlines()
