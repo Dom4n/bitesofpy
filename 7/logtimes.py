@@ -6,7 +6,7 @@ SHUTDOWN_EVENT = 'Shutdown initiated'
 
 # prep: read in the logfile
 logfile = os.path.join('/tmp', 'log')
-urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
+# urllib.request.urlretrieve('http://bit.ly/2AKSIbf', logfile)
 
 with open(logfile) as f:
     loglines = f.readlines()
@@ -22,7 +22,7 @@ def convert_to_datetime(line):
        returns:
        datetime(2014, 7, 3, 23, 27, 51)
     """
-    pass
+    return datetime.strptime(line.split()[1], '%Y-%m-%dT%H:%M:%S')
 
 
 def time_between_shutdowns(loglines):
@@ -31,4 +31,13 @@ def time_between_shutdowns(loglines):
        calculate the timedelta between the first and last one.
        Return this datetime.timedelta object.
     """
-    pass
+    shutdown_start = None
+    shutdown_end = None
+    for line in loglines:
+        if 'Shutdown initiated.' in line and not shutdown_start:
+            # get only first matching
+            shutdown_start = convert_to_datetime(line)
+        elif 'Shutdown complete.' in line:
+            # get last one
+            shutdown_end = convert_to_datetime(line)
+    return shutdown_end - shutdown_start
