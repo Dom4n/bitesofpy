@@ -4,7 +4,7 @@ import os
 import urllib.request
 
 DICTIONARY = os.path.join('/tmp', 'dictionary_m_words.txt')
-# urllib.request.urlretrieve('http://bit.ly/2Cbj6zn', DICTIONARY)
+urllib.request.urlretrieve('http://bit.ly/2Cbj6zn', DICTIONARY)
 
 
 def load_dictionary():
