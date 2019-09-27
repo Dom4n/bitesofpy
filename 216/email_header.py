@@ -25,10 +25,8 @@ def get_email_details(header: str) -> dict:
        https://docs.python.org/3.7/library/re.html#re.Match.groupdict
        If not match, return None
     """
-    pattern = re.compile(r'^From: .*|^To: .*|^Subject: .*|^Date: \w.+ \d+:\d+:\d+', flags=re.MULTILINE)
-    extracted = pattern.findall(header)
-    details = dict()
-    for thing in extracted:
-        thing = thing.split(': ')
-        details[thing[0].lower()] = thing[1]
-    return details or None
+    pattern = re.compile((r'From: (?P<from>.*?)\n.*To: (?P<to>.*?)\n.*'
+                          r'Subject: (?P<subject>.*?)\n.*Date: '
+                          r'(?P<date>.*?) [-+]'), flags=re.DOTALL)
+    extracted = pattern.search(header)
+    return extracted and extracted.groupdict() or None
